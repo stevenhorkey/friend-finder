@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Friend Finder</title>
@@ -9,15 +8,24 @@
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-  <!-- Font Awesome Glyphicons -->
+  <!-- Font Awesome CSS CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
-  <!-- Ajax -->
+  <!-- AJAX -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
-
+  <style>
+    *{
+      padding: 10px 0;
+    }
+    h3{
+      font-weight: bold;
+    }
+    span,b{
+      padding: 0;
+    }
+  </style>
 </head>
-
 <body>
 
   <div class="container">
@@ -25,7 +33,7 @@
     <h2>Survey Questions</h2>
     <hr>
 
-    <h3><strong>About You</strong></h3>
+    <h3>About You</h3>
     <h4>Name (Required)</h4>
     <input type="text" id="name" class="form-control" required>
 
@@ -34,7 +42,7 @@
 
     <hr>
 
-    <h3><strong>Question 1</strong></h3>
+    <h3>Question 1</h3>
     <h4>Your mind is always buzzing with unexplored ideas and plans.</h4>
     <select class="chosen-select" id="q1">
       <option value=""></option>
@@ -45,7 +53,7 @@
       <option value="5">5 (Strongly Agree)</option>
     </select>
 
-    <h3><strong>Question 2</strong></h3>
+    <h3>Question 2</h3>
     <h4>Generally speaking, you rely more on your experience than your imagination.</h4>
     <select class="chosen-select" id="q2">
       <option value=""></option>
@@ -57,7 +65,7 @@
     </select>
 
 
-    <h3><strong>Question 3</strong></h3>
+    <h3>Question 3</h3>
     <h4>You find it easy to stay relaxed and focused even when there is some pressure.</h4>
     <select class="chosen-select" id="q3">
       <option value=""></option>
@@ -69,7 +77,7 @@
     </select>
 
 
-    <h3><strong>Question 4</strong></h3>
+    <h3>Question 4</h3>
     <h4>You rarely do something just out of sheer curiosity.</h4>
     <select class="chosen-select" id="q4">
       <option value=""></option>
@@ -81,7 +89,7 @@
     </select>
 
 
-    <h3><strong>Question 5</strong></h3>
+    <h3>Question 5</h3>
     <h4>People can rarely upset you.</h4>
     <select class="chosen-select" id="q5">
       <option value=""></option>
@@ -93,7 +101,7 @@
     </select>
 
 
-    <h3><strong>Question 6</strong></h3>
+    <h3>Question 6</h3>
     <h4>It is often difficult for you to relate to other people’s feelings.</h4>
     <select class="chosen-select" id="q6">
       <option value=""></option>
@@ -105,7 +113,7 @@
     </select>
 
 
-    <h3><strong>Question 7</strong></h3>
+    <h3>Question 7</h3>
     <h4>In a discussion, truth should be more important than people’s sensitivities.</h4>
     <select class="chosen-select" id="q7">
       <option value=""></option>
@@ -116,7 +124,7 @@
       <option value="5">5 (Strongly Agree)</option>
     </select>
 
-    <h3><strong>Question 8</strong></h3>
+    <h3>Question 8</h3>
     <h4>You rarely get carried away by fantasies and ideas.</h4>
     <select class="chosen-select" id="q8">
       <option value=""></option>
@@ -127,7 +135,7 @@
       <option value="5">5 (Strongly Agree)</option>
     </select>
 
-    <h3><strong>Question 9</strong></h3>
+    <h3>Question 9</h3>
     <h4>You think that everyone’s views should be respected regardless of whether they are supported by facts or not.</h4>
     <select class="chosen-select" id="q9">
       <option value=""></option>
@@ -138,7 +146,7 @@
       <option value="5">5 (Strongly Agree)</option>
     </select>
 
-    <h3><strong>Question 10</strong></h3>
+    <h3>Question 10</h3>
     <h4>You feel more energetic after spending time with a group of people.</h4>
     <select class="chosen-select" id="q10">
       <option value=""></option>
@@ -173,7 +181,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h2 class="modal-title"><strong>Best Match</strong></h2>
+          <h2 class="modal-title">Best Match</h2>
         </div>
         <div class="modal-body">
           <h2 id="match-name"></h2>
@@ -209,11 +217,12 @@
       $(selector).chosen(config[selector]);
     }
 
-    // Capture the form inputs
+    // When submit button is clicked, validate form
     $("#submit").on("click", function(event) {
+      // Prevent Reload
       event.preventDefault();
 
-      // Form validation
+      // Checks if everything has been answered and filled out
       function validateForm() {
         var isValid = true;
         $(".form-control").each(function() {
@@ -221,7 +230,7 @@
             isValid = false;
           }
         });
-
+        
         $(".chosen-select").each(function() {
 
           if ($(this).val() === "") {
@@ -231,9 +240,9 @@
         return isValid;
       }
 
-      // If all required fields are filled
+      // If form is completely filled, run everything below
       if (validateForm()) {
-        // Create an object for the user"s data
+        // set object user data to name, photo, and corresponding scores inputted.
         var userData = {
           name: $("#name").val(),
           photo: $("#photo").val(),
@@ -251,7 +260,7 @@
           ]
         };
 
-        // AJAX post the data to the friends API.
+        // Use AJAX/JQuery to post the object to api/friends
         $.post("/api/friends", userData, function(data) {
 
           // Grab the result from the AJAX post so that the best match's name and photo are displayed.

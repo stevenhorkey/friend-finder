@@ -1,14 +1,11 @@
 var express = require("express");
-var bodyParser = require("body-parser");
-var path = require("path");
+var router = express.Router();
 
-var app = express();
-
-app.get("/api/friends", function(req, res) {
+router.get("/api/friends", function(req, res) {
     return res.json(friends);
 });
-
-app.post("/api/friends", function(req, res) {
+    
+router.post("/api/friends", function(req, res) {
    
     var newfriend = req.body;
   
@@ -18,3 +15,5 @@ app.post("/api/friends", function(req, res) {
   
     res.json(newfriend);
 });
+
+module.exports = router;

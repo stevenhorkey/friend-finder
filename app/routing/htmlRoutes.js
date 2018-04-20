@@ -1,14 +1,12 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var path = require("path");
+var express = require('express');
+var router = express.Router();
 
-var app = express();
-
-app.get("/", function(req, res) {
+router.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "home.html"));
 });
 
-app.get("/survey", function(req, res) {
+router.get("/survey", function(req, res) {
     res.sendFile(path.join(__dirname, "survey.html"));
 });
 
+module.exports = router;
