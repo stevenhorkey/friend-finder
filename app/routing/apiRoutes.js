@@ -1,11 +1,12 @@
 var express = require("express");
 var router = express.Router();
+var friends = require('../data/friends');
 
-router.get("/api/friends", function(req, res) {
+router.get("/", function(req, res) {
     return res.json(friends);
 });
     
-router.post("/api/friends", function(req, res) {
+router.post("/", function(req, res) {
    
     var newfriend = req.body;
   

@@ -167,7 +167,7 @@
     <hr>
     <footer class="footer">
       <div class="container">
-        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/afhaque/friendfinder">GitHub Repo</a></p>
+        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/stevenhorkey/friendfinder">GitHub</a></p>
       </div>
     </footer>
 
@@ -196,53 +196,29 @@
   </div>
 
   <script type="text/javascript">
-    // Chosen CSS
-    var config = {
-      ".chosen-select": {},
-      ".chosen-select-deselect": {
-        allow_single_deselect: true
-      },
-      ".chosen-select-no-single": {
-        disable_search_threshold: 10
-      },
-      ".chosen-select-no-results": {
-        no_results_text: "Oops, nothing found!"
-      },
-      ".chosen-select-width": {
-        width: "95%"
-      }
-    };
+    
 
-    for (var selector in config) {
-      $(selector).chosen(config[selector]);
-    }
-
-    // When submit button is clicked, validate form
     $("#submit").on("click", function(event) {
-      // Prevent Reload
       event.preventDefault();
 
-      // Checks if everything has been answered and filled out
-      function validateForm() {
-        var isValid = true;
+      function validate() {
+        var valid = true;
         $(".form-control").each(function() {
           if ($(this).val() === "") {
-            isValid = false;
+            valid = false;
           }
         });
         
         $(".chosen-select").each(function() {
 
           if ($(this).val() === "") {
-            isValid = false;
+            valid = false;
           }
         });
-        return isValid;
+        return valid;
       }
 
-      // If form is completely filled, run everything below
-      if (validateForm()) {
-        // set object user data to name, photo, and corresponding scores inputted.
+      if (validate()) {
         var userData = {
           name: $("#name").val(),
           photo: $("#photo").val(),
@@ -259,20 +235,18 @@
             $("#q10").val()
           ]
         };
-
-        // Use AJAX/JQuery to post the object to api/friends
+        
         $.post("/api/friends", userData, function(data) {
 
-          // Grab the result from the AJAX post so that the best match's name and photo are displayed.
           $("#match-name").text(data.name);
           $("#match-img").attr("src", data.photo);
+          console.log(data)
 
-          // Show the modal with the best match
           $("#results-modal").modal("toggle");
 
         });
       } else {
-        alert("Please fill out all fields before submitting!");
+        alert("Please fill out all fields!");
       }
     });
   </script>
