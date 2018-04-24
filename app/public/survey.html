@@ -236,14 +236,33 @@
           ]
         };
         
-        $.post("/api/friends", userData, function(data) {
-
-          $("#match-name").text(data.name);
-          $("#match-img").attr("src", data.photo);
-          console.log(data)
+        // These next lines up until the post function check the matching quality between the user and the other users.
+        userTotal = userData.scores.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
+        smallestDiff = 100;
+        smallestIndex = 0;
+        totals = [];
+        $.get('/api/friends', function(data){
+          console.log(data);
+          for(var i = 0;i<data.length;i++){
+            total = data[i].scores.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
+            totals.push(total);
+          }
+          for(var i = 0;i<totals.length;i++){
+            if (userTotal - totals[i] < smallestDiff){
+              smallestDiff = userTotal - totals[i];
+              smallestIndex = i;
+              console.log(smallestDiff);
+              console.log(smallestIndex);
+            };
+          };
+          // adjusting the modal
+          $("#match-name").text(data[smallestIndex].name);
+          $("#match-img").attr("src", data[smallestIndex].photo);
 
           $("#results-modal").modal("toggle");
-
+        });
+        $.post("/api/friends", userData, function(data) {
+          console.log(data)
         });
       } else {
         alert("Please fill out all fields!");
